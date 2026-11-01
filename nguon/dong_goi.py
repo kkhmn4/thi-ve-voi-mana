@@ -9,8 +9,10 @@ Tệp mô hình lấy từ cdn.jsdelivr.net/gh/ml5js/ml5-data-and-models@main/mo
 """
 import base64
 import json
+import math
 import os
 import re
+import statistics
 import sys
 import urllib.parse
 import urllib.request
@@ -27,6 +29,9 @@ DE = {"cat": "cat", "fish": "fish", "sun": "sun", "umbrella": "umbrella", "bicyc
 # Đề thử thách: khó vẽ với học sinh nhưng AI nhận ra tốt khi vẽ đúng (số đo do_de_kho.py: 32 đến 38 trên 40).
 KHO = {"bicycle", "guitar", "lighthouse", "castle", "train"}
 SO_MAU = 18
+# Luật thắng: hình phải đạt một trong hai mức của chính đề đó, tính từ trung vị hình AI nhận ra trong Quick, Draw!.
+# Số đo chọn hệ số: vòng tròn và 2 tai của con mèo không đạt, thêm mắt hoặc ria thì đạt, hình rõ vẫn thắng khoảng 2 trên 3.
+HE_NET, HE_MUC = 0.7, 0.95
 
 
 def mau(lop, thu_muc):
@@ -42,6 +47,22 @@ def mau(lop, thu_muc):
         if m.get("recognized") and len(ra) < SO_MAU:
             ra.append(m["drawing"])
     return ra
+
+
+def muc_can(lop, thu_muc):
+    """Số nét và độ dài nét (chia cạnh lớn của hình) tối thiểu của một đề."""
+    so_net, muc = [], []
+    for dong in open(os.path.join(thu_muc, lop + ".ndjson"), encoding="utf-8"):
+        m = json.loads(dong)
+        if not m.get("recognized"):
+            continue
+        ns = m["drawing"]
+        xs = [x for n in ns for x in n[0]]
+        ys = [y for n in ns for y in n[1]]
+        dai = sum(math.hypot(n[0][i] - n[0][i - 1], n[1][i] - n[1][i - 1]) for n in ns for i in range(1, len(n[0])))
+        so_net.append(len(ns))
+        muc.append(dai / max(max(xs) - min(xs), max(ys) - min(ys), 1))
+    return math.ceil(HE_NET * statistics.median(so_net)), round(HE_MUC * statistics.median(muc), 2)
 
 
 def mau_nhe(lop, thu_muc):
@@ -90,7 +111,7 @@ def main(mo, nd, day_net):
     assert not thieu, thieu
     gd = os.path.join(TN, "giong")
     du = {"ten": ten, "vi": ["" if t in AN else NHAN[t] for t in ten],
-          "de": [{"ten": NHAN[t], "so": ten.index(t), "ic": ic, "kho": t in KHO, "hinh": mau(t, nd)} for t, ic in DE.items()],
+          "de": [dict(ten=NHAN[t], so=ten.index(t), kho=t in KHO, hinh=mau(t, nd), **dict(zip(("can_net", "can_muc"), muc_can(t, nd)))) for t in DE],
           "day_net": day_net,
           "mo_hinh": json.load(open(os.path.join(mo, "model.json"), encoding="utf-8")),
           "trong_so": b64(os.path.join(mo, "group1-shard1of1.bin")),

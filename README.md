@@ -7,7 +7,9 @@ Trò chơi vẽ cho học sinh lớp 4, 5. Em vẽ, Mana đoán và đọc dự 
 ## Luật chơi
 
 - Vẽ 6 hình, mỗi hình 20 giây, 4 hình dễ và 2 hình thử thách. Chơi một mình hoặc đội 2 đến 3 bạn tiếp sức trên một máy: bạn nhận máy bấm Vẽ! thì giờ mới chạy.
-- Mana đoán ra thì có pháo giấy chúc mừng rồi sang hình kế. Hết 20 giây cũng sang hình kế.
+- Đề chỉ có chữ, không có hình minh họa, để không lộ cách vẽ.
+- Thắng một hình khi đủ ba điều, giữ được ở 2 lần đoán liền nhau: đề đứng đầu trong dự đoán của Mana, Mana chắc từ 30% trở lên, hình đủ nét. Đủ nét nghĩa là đạt số nét hoặc độ dài nét tối thiểu của chính đề đó, tính từ trung vị hình trong Quick, Draw!. Ví dụ con mèo: vòng tròn và 2 tai chưa thắng, thêm mắt hoặc ria mới thắng. Chưa đủ nét thì Mana nhắc vẽ thêm.
+- Thắng thì có pháo giấy chúc mừng rồi sang hình kế. Hết 20 giây cũng sang hình kế.
 - Có bút, gôm, xóa hết, bỏ qua.
 - Cuối lượt, bấm vào từng hình để xem Mana đoán gì, mọi người vẽ thế nào, vì sao Mana đoán ra hoặc đoán nhầm.
 

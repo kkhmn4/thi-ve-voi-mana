@@ -105,9 +105,9 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 
 #giua { flex:1; min-height:0; display:grid; grid-template-columns:minmax(0,1.7fr) minmax(280px,1fr); gap:14px; }
 #trai { display:flex; flex-direction:column; gap:10px; min-height:0; }
-#the_de { display:flex; align-items:center; gap:12px; background:var(--troi); color:#fff; border-radius:20px; padding:4px 18px 4px 8px; box-shadow:0 6px 0 var(--troi-dam); }
-#the_de i { width:clamp(48px,8vh,72px); height:clamp(48px,8vh,72px); background:#fff; color:var(--troi-dam); border-radius:50%; display:grid; place-items:center; font-size:clamp(32px,5.8vh,52px); font-style:normal; }
-#de_ten { font-size:clamp(30px,6.6vh,56px); font-weight:900; line-height:1.1; }
+/* Đề chỉ có chữ, không có hình minh họa: hình sẽ làm lộ cách vẽ. */
+#the_de { display:flex; align-items:center; justify-content:center; background:var(--troi); color:#fff; border-radius:20px; padding:6px 18px; box-shadow:0 6px 0 var(--troi-dam); text-align:center; }
+#de_ten { font-size:clamp(36px,8.6vh,72px); font-weight:900; line-height:1.1; }
 #khung { position:relative; flex:1; min-height:0; background:#fff; border:5px solid var(--vien-dam); border-radius:24px; overflow:hidden; }
 #khung.gom { cursor:none; }
 #ve { position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:crosshair; }
@@ -138,14 +138,11 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 #m_the { align-items:center; justify-content:center; background:var(--troi); z-index:5; }
 #the_lon { display:flex; flex-direction:column; align-items:center; gap:2vh; color:#fff; text-align:center; animation:bat .3s ease-out; padding:16px; }
 #the_so { font-size:5.4vh; font-weight:900; }
-#the_hinh { width:26vh; height:26vh; background:#fff; color:var(--troi-dam); border-radius:50%; display:grid; place-items:center; font-size:18vh; }
-#the_ten { font-size:min(11vh,8vw); font-weight:900; line-height:1.1; }
+#the_ten { font-size:min(24vh,11vw); font-weight:900; line-height:1.1; }
 #the_goi { font-size:min(4.2vh,4vw); font-weight:800; min-height:1.2em; }
 #nut_ve { font-size:min(7vh,7vw); padding:.2em 1.1em; }
 #m_the.kho { background:var(--hong); }
-#m_the.kho #the_hinh { color:var(--hong-dam); }
 #the_de.kho { background:var(--hong); box-shadow:0 6px 0 var(--hong-dam); }
-#the_de.kho i { color:var(--hong-dam); }
 .o.kho { border-color:var(--hong); color:var(--hong); }
 
 /* Màn kết quả */
@@ -169,7 +166,6 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 /* Hình AI đã học */
 #m_hoc { flex-direction:column; gap:10px; padding:12px 18px 72px; background-color:var(--kem); z-index:6; }
 #hoc_dau { display:flex; align-items:center; gap:12px; }
-#hoc_dau i { width:64px; height:64px; background:var(--troi); color:#fff; border-radius:50%; display:grid; place-items:center; font-size:44px; font-style:normal; flex:none; }
 #hoc_chu { font-size:clamp(26px,5vh,42px); font-weight:900; line-height:1.15; color:var(--troi-dam); flex:1; }
 #hoc_than { flex:1; min-height:0; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:14px; }
 .tu { display:flex; flex-direction:column; gap:8px; min-height:0; background:#fff; border:4px solid var(--vien); border-radius:20px; padding:10px 12px; }
@@ -194,7 +190,7 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
   .o { width:27px; border-width:3px; font-size:15px; } .o.dang { transform:none; }
   #dong_ho { font-size:24px; padding:0 8px 0 4px; min-width:0; gap:3px; border-width:3px; }
   #nut_tieng { font-size:22px; }
-  #the_de { padding:3px 12px 3px 5px; gap:8px; } #the_de i { width:38px; height:38px; font-size:26px; } #de_ten { font-size:24px; }
+  #the_de { padding:5px 12px; } #de_ten { font-size:30px; }
   #cong_cu { gap:8px; } #cong_cu .khoi { width:auto; flex:1; height:50px; font-size:26px; }
   #nut_bo { flex:1.4; } .chu_nut { font-size:.7em; }
   #doan { gap:4px; } .d { font-size:13px; padding:2px 5px 4px; border-width:2px; gap:1px 3px; } .d u { height:7px; }
@@ -205,13 +201,13 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
   #m_hoc { overflow:auto; } #hoc_than { flex:none; } #c_em { height:180px; flex:none; }
   #hoc_chu { font-size:24px; } #hoc_vi { font-size:18px; }
   .y { font-size:20px; padding:5px 12px 5px 6px; } .ba_y { gap:8px; } #nut_choi { font-size:34px; } #nut_thu_loa { font-size:20px; } #thu_loa_chu { font-size:15px; }
-  #the_so { font-size:28px; } #the_ten { font-size:42px; }
+  #the_so { font-size:22px; } #the_ten { font-size:15vw; }
 }
 @media (max-height:500px) {
   #m_choi { padding:6px 12px 12px; gap:6px; }
   .o { width:28px; font-size:16px; border-width:3px; } .o.dang { transform:none; }
   #dong_ho { font-size:24px; border-width:3px; padding:0 8px 0 4px; } #nut_tieng { font-size:20px; }
-  #the_de { padding:2px 10px 2px 4px; box-shadow:0 3px 0 var(--troi-dam); } #the_de i { width:30px; height:30px; font-size:20px; } #de_ten { font-size:20px; }
+  #the_de { padding:3px 10px; box-shadow:0 3px 0 var(--troi-dam); } #de_ten { font-size:24px; }
   #trai, #giua { gap:6px; }
   #cong_cu .khoi { height:42px; width:62px; font-size:24px; box-shadow:0 4px 0 var(--mau-dam); }
   #giua { grid-template-columns:minmax(0,2.2fr) minmax(170px,1fr); }
@@ -270,7 +266,7 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
   </div>
   <div id="giua">
     <div id="trai">
-      <div id="the_de"><i id="de_hinh"></i><div id="de_ten"></div></div>
+      <div id="the_de"><div id="de_ten"></div></div>
       <div id="khung"><canvas id="ve"></canvas><div id="vong_gom"></div></div>
       <div id="cong_cu">
         <button class="khoi troi chon" id="nut_but" aria-label="Bút"><span data-ic="pencil-simple"></span></button>
@@ -293,7 +289,7 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 
 <div id="phao" aria-hidden="true"></div>
 
-<section class="man" id="m_the"><div id="the_lon"><div id="the_so"></div><div id="the_hinh"></div><div id="the_ten"></div><div id="the_goi"></div><button class="khoi la" id="nut_ve"><span data-ic="pencil-simple"></span>Vẽ!</button></div></section>
+<section class="man" id="m_the"><div id="the_lon"><div id="the_so"></div><div id="the_ten"></div><div id="the_goi"></div><button class="khoi la" id="nut_ve"><span data-ic="pencil-simple"></span>Vẽ!</button></div></section>
 
 <section class="man" id="m_ket">
   <div id="dau_ket"><img id="mana_ket" alt="Mana"><div id="sao"></div><div id="diem"></div></div>
@@ -305,7 +301,7 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 </section>
 
 <section class="man" id="m_hoc">
-  <div id="hoc_dau"><i id="hoc_hinh"></i><div id="hoc_chu"></div><button class="khoi troi" id="nut_dong" aria-label="Đóng" style="font-size:34px;padding:.3em"><span data-ic="x"></span></button></div>
+  <div id="hoc_dau"><div id="hoc_chu"></div><button class="khoi troi" id="nut_dong" aria-label="Đóng" style="font-size:34px;padding:.3em"><span data-ic="x"></span></button></div>
   <div id="hoc_than">
     <div class="tu" id="tu_em"><h3>Hình của em</h3><canvas id="c_em"></canvas><div id="hoc_doan" style="display:flex;flex-direction:column;gap:6px"></div></div>
     <div id="hoc_phai">
@@ -319,7 +315,7 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 <script>/*TF*/</script>
 <script>
 const DU = /*DU_LIEU*/;
-const GIAY_HINH = 20, SO_HINH = 6, NGUONG = 0.1, MOT_CAU = 700, BK_GOM = 26;
+const GIAY_HINH = 20, SO_HINH = 6, NGUONG = 0.3, MOT_CAU = 700, BK_GOM = 26;
 const $ = id => document.getElementById(id);
 const ve = $("ve"), g = ve.getContext("2d");
 const icon = t => DU.icon[t] || "";
@@ -327,7 +323,7 @@ document.querySelectorAll("[data-ic]").forEach(e => { e.innerHTML = icon(e.datas
 
 let moHinh = null, netVe = [], net = null, gomDang = false, cheDo = "but";
 let dangVe = false, conLai = GIAY_HINH, nhip = null, doiDoan = null, deThu = 0, danhSach = [], ketQua = [], deNay = null, batTieng = true;
-let daNoi = new Set(), lanNoi = 0;
+let daNoi = new Set(), lanNoi = 0, dangDat = false;
 
 /* Âm thanh: Web Audio, một nguồn phát duy nhất. Câu mới chỉ đọc khi rỗi, câu quan trọng dừng câu đang đọc. Không chồng tiếng. */
 const AC = window.AudioContext || window.webkitAudioContext;
@@ -507,12 +503,30 @@ function top3(p) {
   return hien.sort((a, b) => b[0] - a[0]).slice(0, 3);
 }
 function xoaDoan() { for (let i = 0; i < 3; i++) { $("d" + i).textContent = "..."; $("s" + i).textContent = ""; $("t" + i).style.width = "0"; } }
+/* Độ dài nét chia cạnh lớn của hình, nên không phụ thuộc cỡ màn hình. */
+function mucVe() {
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9, m = 0;
+  for (const n of netVe) n.forEach((d, i) => {
+    x0 = Math.min(x0, d[0]); y0 = Math.min(y0, d[1]); x1 = Math.max(x1, d[0]); y1 = Math.max(y1, d[1]);
+    if (i) m += Math.hypot(d[0] - n[i - 1][0], d[1] - n[i - 1][1]);
+  });
+  return m / Math.max(x1 - x0, y1 - y0, 1);
+}
+/* Luật thắng: đề đứng đầu, Mana đủ chắc, hình đủ nét so với mức của chính đề đó (dong_goi.py tính từ Quick, Draw!). Vòng tròn và 2 tai đã ra mèo với máy, nên xác suất không đủ để chặn. */
+function datDieuKien(de, p, hang) { return hang === 1 && p >= NGUONG && (netVe.length >= de.can_net || mucVe() >= de.can_muc); }
 function doan() {
   if (!moHinh || !dangVe || !netVe.length) return;
-  const t = top3(duDoan());
+  const p = duDoan(), t = top3(p);
   t.forEach((m, i) => { $("d" + i).textContent = DU.vi[m[1]]; $("s" + i).textContent = Math.round(m[0] * 100) + "%"; $("t" + i).style.width = Math.round(m[0] * 100) + "%"; });
   deNay.doan = t[0][1];
-  if (t.some(m => m[1] === deNay.so && m[0] >= NGUONG)) { doanDung(); return; }
+  const dau = t[0][1] === deNay.so;
+  if (datDieuKien(DU.de[deNay.i], p[deNay.so], dau ? 1 : 2)) {
+    /* Đạt hai lần đoán liền nhau mới thắng, tránh thắng do một khoảnh khắc giữa nét. Bút dừng thì tự đoán lại lần hai. */
+    if (dangDat) { doanDung(); return; }
+    dangDat = true; henDoan(); return;
+  }
+  dangDat = false;
+  if (dau) { $("bong").textContent = "Sắp giống rồi! Vẽ thêm cho đủ nhé."; return; }
   /* Đọc dự đoán như Quick, Draw!: đoán đầu là Mình thấy, đoán sau là Hay là. Mỗi tên đọc một lần trong một hình. */
   const m = t[0], ten = DU.ten[m[1]].replace("-", "_");
   if (m[0] >= 0.08 && !daNoi.has(ten)) {
@@ -539,7 +553,7 @@ function veVach() {
     const o = document.createElement("div"), k = ketQua[i];
     const kho = DU.de[danhSach[i]].kho;
     o.className = "o" + (k ? (k.dung ? " dung" : " sai") : (i === deThu ? " dang" : (kho ? " kho" : "")));
-    o.innerHTML = k ? icon(k.dung ? "check" : "skip-forward") : (i === deThu ? icon(DU.de[danhSach[i]].ic) : (kho ? icon("fire") : ""));
+    o.innerHTML = k ? icon(k.dung ? "check" : "skip-forward") : (i === deThu ? i + 1 : (kho ? icon("fire") : ""));
     v.appendChild(o);
   }
 }
@@ -555,17 +569,17 @@ function chayGio() {
 }
 function hienDe() {
   const i = danhSach[deThu % danhSach.length], d = DU.de[i], so = deThu + 1;
-  deNay = { i, so: d.so, ten: d.ten, ic: d.ic, doan: -1 };
-  netVe = []; net = null; daNoi = new Set(); lanNoi = 0;
+  deNay = { i, so: d.so, ten: d.ten, doan: -1 };
+  netVe = []; net = null; daNoi = new Set(); lanNoi = 0; dangDat = false;
   chonCheDo("but");
-  $("de_hinh").innerHTML = icon(d.ic); $("de_ten").textContent = "Vẽ " + d.ten;
+  $("de_ten").textContent = "Vẽ " + d.ten;
   $("bong").className = ""; $("bong").textContent = "Mình đang nhìn đây!";
   doiMana("cho_doi"); xoaDoan(); veVach();
   conLai = GIAY_HINH; $("giay").textContent = conLai; $("dong_ho").classList.remove("gap");
   const kho = !!d.kho, tenAm = "v_" + DU.ten[d.so].replace("-", "_");
   $("the_so").innerHTML = (kho ? icon("fire") + " Thử thách: " : "") + "Hình " + so + " trên " + SO_HINH;
   $("the_so").style.cssText = "display:flex;gap:.3em;align-items:center;justify-content:center";
-  $("the_hinh").innerHTML = icon(d.ic); $("the_ten").textContent = d.ten;
+  $("the_ten").textContent = d.ten;
   $("the_goi").textContent = so > 1 ? "Chuyền máy cho bạn kế tiếp" : "";
   $("m_the").classList.toggle("kho", kho); $("the_de").classList.toggle("kho", kho);
   chuyenMan("m_the");
@@ -579,7 +593,7 @@ function hienDe() {
 function ghiKet(dung) {
   dangVe = false; dungGio();
   const top = netVe.length ? top3(duDoan()) : [];
-  ketQua.push({ ten: deNay.ten, i: deNay.i, so: deNay.so, ic: deNay.ic, dung, top, net: netVe.map(n => n.slice()) });
+  ketQua.push({ ten: deNay.ten, i: deNay.i, so: deNay.so, dung, top, net: netVe.map(n => n.slice()) });
 }
 function sangHinh() {
   deThu++;
@@ -679,7 +693,6 @@ function luoiHinh(id, ds, soToi) {
 }
 function xemHoc(k) {
   const d = DU.de[k.i], doanDau = k.top.length ? k.top[0][1] : -1, nham = !k.dung && doanDau >= 0 && doanDau !== k.so;
-  $("hoc_hinh").innerHTML = icon(d.ic);
   $("hoc_chu").textContent = "Đề: " + d.ten;
   veLenCanvas($("c_em"), k.net);
   $("hoc_doan").innerHTML = k.top.length ? k.top.map(m => '<div class="d"><span>' + DU.vi[m[1]] + "</span><small>" + Math.round(m[0] * 100) + '%</small><u><b style="width:' + Math.round(m[0] * 100) + '%"></b></u></div>').join("") : '<div class="d"><span>Em chưa vẽ hình này</span></div>';
@@ -693,9 +706,9 @@ function xemHoc(k) {
   $("mana_vi").src = DU.mana[k.dung ? "vo_tay" : "gai_dau"];
   $("hoc_vi").className = k.dung ? "dung" : "";
   $("chu_vi").textContent = k.dung ? "Hình của em giống những hình " + d.ten + " Mana đã học, nên Mana đoán ra."
-    : (nham ? "Hình của em giống hình " + DU.vi[doanDau] + " Mana đã học, nên Mana đoán nhầm." : "AI chỉ đoán được từ những hình đã học.");
+    : (nham ? "Hình của em giống hình " + DU.vi[doanDau] + " Mana đã học, nên Mana đoán nhầm." : doanDau === k.so ? "Mana thấy hơi giống, nhưng hình chưa đủ nét để chắc chắn." : "AI chỉ đoán được từ những hình đã học.");
   $("m_hoc").classList.add("hien");
-  if (k.top.length) noi(k.dung ? "vi_dung" : "vi_sai", true);
+  if (k.dung || nham) noi(k.dung ? "vi_dung" : "vi_sai", true);
 }
 function chonCheDo(m) {
   cheDo = m;
@@ -714,7 +727,7 @@ $("nut_thu_loa").onclick = thuLoa;
 if (/\bCode\/|Electron/.test(navigator.userAgent)) $("thu_loa_chu").textContent = "Tệp đang mở trong VS Code nên có thể không có tiếng. Hãy mở bằng Chrome hoặc Edge.";
 $("nut_but").onclick = () => chonCheDo("but");
 $("nut_gom").onclick = () => chonCheDo("gom");
-$("nut_xoa").onclick = () => { if (!dangVe) return; netVe = []; veLai(); xoaDoan(); };
+$("nut_xoa").onclick = () => { if (!dangVe) return; netVe = []; dangDat = false; veLai(); xoaDoan(); };
 $("nut_bo").onclick = boQua;
 $("nut_dong").onclick = () => $("m_hoc").classList.remove("hien");
 $("nut_tieng").onclick = () => {
