@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.netlify/
+nguon/thu.png
+dist/
