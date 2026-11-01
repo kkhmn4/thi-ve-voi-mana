@@ -174,6 +174,13 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
   #m_ket { overflow:auto; } #luoi_ket { grid-auto-rows:90px; flex:none; }
   #m_hoc { overflow:auto; } #hoc_than { flex:none; } .luoi { grid-auto-rows:60px; } #c_em { height:120px; flex:none; }
 }
+#phao { position:fixed; inset:0; z-index:4; pointer-events:none; overflow:hidden; display:none; }
+#phao.hien { display:block; }
+#phao i { position:absolute; top:-5vh; width:clamp(10px,1.5vw,18px); height:clamp(14px,2.2vw,26px); border-radius:3px; animation:roi 1.4s ease-in forwards; }
+#dau_sao { position:absolute; left:50%; top:40%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--vang); font-size:min(26vh,26vw); animation:dong .4s ease-out; }
+#dau_sao span { font-size:.3em; font-weight:900; color:#fff; background:var(--la); padding:.08em .5em; border-radius:18px; box-shadow:0 6px 0 var(--la-dam); }
+@keyframes roi { to { transform:translateY(112vh) rotate(var(--xoay)); } }
+@keyframes dong { from { transform:translate(-50%,-50%) scale(.3); opacity:0; } 70% { transform:translate(-50%,-50%) scale(1.12); } }
 @keyframes nhun { 50% { transform:translateY(-10px); } }
 @keyframes nhay { 40% { transform:translateY(-14%) scale(1.06); } }
 @keyframes dap { 50% { transform:scale(1.08); } }
@@ -197,7 +204,7 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
   <h1>Thi vẽ với Mana</h1>
   <div class="ba_y">
     <div class="y" style="--mau:var(--troi)"><i data-ic="pencil-simple"></i>6 hình</div>
-    <div class="y" style="--mau:var(--cam)"><i data-ic="timer"></i>60 giây</div>
+    <div class="y" style="--mau:var(--cam)"><i data-ic="timer"></i>20 giây mỗi hình</div>
     <div class="y" style="--mau:var(--nho)"><i data-ic="speaker-high"></i>Mana đoán</div>
   </div>
   <div id="hang_dau">
@@ -210,7 +217,7 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 <section class="man" id="m_choi">
   <div id="tren">
     <div id="vach" aria-label="Các hình cần vẽ"></div>
-    <div id="dong_ho"><span data-ic="timer"></span><span id="giay">60</span></div>
+    <div id="dong_ho"><span data-ic="timer"></span><span id="giay">20</span></div>
     <button class="khoi troi" id="nut_tieng" aria-label="Bật hoặc tắt tiếng"><span id="ic_tieng" data-ic="speaker-high"></span></button>
   </div>
   <div id="giua">
@@ -235,6 +242,8 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
     </div>
   </div>
 </section>
+
+<div id="phao" aria-hidden="true"></div>
 
 <section class="man" id="m_the"><div id="the_lon"><div id="the_so"></div><div id="the_hinh"></div><div id="the_ten"></div></div></section>
 
@@ -262,14 +271,14 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 <script>/*TF*/</script>
 <script>
 const DU = /*DU_LIEU*/;
-const TONG_GIAY = 60, SO_HINH = 6, NGUONG = 0.1, MOT_CAU = 700, BK_GOM = 26;
+const GIAY_HINH = 20, SO_HINH = 6, NGUONG = 0.1, MOT_CAU = 700, BK_GOM = 26;
 const $ = id => document.getElementById(id);
 const ve = $("ve"), g = ve.getContext("2d");
 const icon = t => DU.icon[t] || "";
 document.querySelectorAll("[data-ic]").forEach(e => { e.innerHTML = icon(e.dataset.ic); });
 
 let moHinh = null, netVe = [], net = null, gomDang = false, cheDo = "but";
-let dangVe = false, conLai = TONG_GIAY, nhip = null, doiDoan = null, deThu = 0, danhSach = [], ketQua = [], deNay = null, batTieng = true;
+let dangVe = false, conLai = GIAY_HINH, nhip = null, doiDoan = null, deThu = 0, danhSach = [], ketQua = [], deNay = null, batTieng = true;
 let daNoi = new Set(), lanNoi = 0;
 
 /* Âm thanh: Web Audio, một nguồn phát duy nhất. Câu mới chỉ đọc khi rỗi, câu quan trọng dừng câu đang đọc. Không chồng tiếng. */
@@ -480,20 +489,15 @@ function veVach() {
     o.innerHTML = k ? icon(k.dung ? "check" : "skip-forward") : (i === deThu ? icon(DU.de[danhSach[i]].ic) : "");
     v.appendChild(o);
   }
-  const thuong = ketQua.slice(SO_HINH).filter(k => k.dung).length;
-  if (ketQua.length >= SO_HINH) {
-    const o = document.createElement("div"); o.className = "o dung"; o.style.background = "var(--vang)"; o.style.borderColor = "var(--vang-dam)";
-    o.innerHTML = icon("star"); o.setAttribute("aria-label", "Hình thưởng " + thuong); v.appendChild(o);
-  }
 }
 function dungGio() { clearInterval(nhip); nhip = null; }
 function chayGio() {
   dungGio();
   nhip = setInterval(() => {
     conLai--; $("giay").textContent = conLai;
-    $("dong_ho").classList.toggle("gap", conLai <= 10);
+    $("dong_ho").classList.toggle("gap", conLai <= 5);
     if (conLai <= 5 && conLai > 0) tiengBeep(660, .12, .12);
-    if (conLai <= 0) hetGio();
+    if (conLai <= 0) hetHinh();
   }, 1000);
 }
 function hienDe() {
@@ -504,7 +508,8 @@ function hienDe() {
   $("de_hinh").innerHTML = icon(d.ic); $("de_ten").textContent = "Vẽ " + d.ten;
   $("bong").className = ""; $("bong").textContent = "Mình đang nhìn đây!";
   doiMana("cho_doi"); xoaDoan(); veVach();
-  $("the_so").textContent = so <= SO_HINH ? "Hình " + so + " trên " + SO_HINH : "Hình thưởng";
+  conLai = GIAY_HINH; $("giay").textContent = conLai; $("dong_ho").classList.remove("gap");
+  $("the_so").textContent = "Hình " + so + " trên " + SO_HINH;
   $("the_hinh").innerHTML = icon(d.ic); $("the_ten").textContent = d.ten;
   chuyenMan("m_the");
   const lon = $("the_lon"); lon.style.animation = "none"; void lon.offsetWidth; lon.style.animation = "";
@@ -518,10 +523,34 @@ function ghiKet(dung) {
   const top = netVe.length ? top3(duDoan()) : [];
   ketQua.push({ ten: deNay.ten, i: deNay.i, so: deNay.so, ic: deNay.ic, dung, top, net: netVe.map(n => n.slice()) });
 }
-function sangHinh() { deThu++; hienDe(); }
+function sangHinh() {
+  deThu++;
+  if (deThu >= SO_HINH) { ketThuc(); return; }
+  hienDe();
+}
+/* Chúc mừng: pháo giấy màu đặc rơi trên bảng vẽ, dấu sao và chuông ba nốt. */
+function chucMung() {
+  const phao = $("phao"), mau = ["#ffc21a", "#ff4f8b", "#1e9bff", "#22b45a", "#8b5cf6", "#ff8a1f"];
+  phao.innerHTML = "";
+  for (let i = 0; i < 70; i++) {
+    const m = document.createElement("i");
+    m.style.left = Math.random() * 100 + "%";
+    m.style.background = mau[i % mau.length];
+    m.style.animationDelay = Math.random() * .35 + "s";
+    m.style.animationDuration = 1.1 + Math.random() * .8 + "s";
+    m.style.setProperty("--xoay", Math.round(Math.random() * 720 - 360) + "deg");
+    phao.appendChild(m);
+  }
+  const dau = document.createElement("div");
+  dau.id = "dau_sao"; dau.innerHTML = icon("star") + "<span>Giỏi quá!</span>";
+  phao.appendChild(dau);
+  phao.classList.add("hien");
+  [[659, 0], [880, 130], [1175, 260]].forEach(n => setTimeout(() => tiengBeep(n[0], .3, .16), n[1]));
+  setTimeout(() => { phao.classList.remove("hien"); phao.innerHTML = ""; }, 2100);
+}
 function doanDung() {
   ghiKet(true);
-  tiengBeep(880, .3, .18);
+  chucMung();
   $("bong").className = "dung"; $("bong").textContent = "Mình biết rồi: " + deNay.ten + "!";
   doiMana("vo_tay", true); veVach();
   noi("w_" + DU.ten[deNay.so].replace("-", "_"), true, () => setTimeout(sangHinh, 300));
@@ -533,14 +562,18 @@ function boQua() {
   doiMana("gai_dau", true);
   noi("bo_qua", true, () => setTimeout(sangHinh, 200));
 }
-function hetGio() {
+function hetHinh() {
   dungGio();
-  if (conLai > 0) return;
+  if (!dangVe) return;
+  ghiKet(false); veVach();
   $("dong_ho").classList.remove("gap");
-  const dang = dangVe;
-  if (dang) ghiKet(false);
-  dangVe = false;
-  noi("het_gio", true, () => noi("tong_ket", true, null));
+  $("bong").className = ""; $("bong").textContent = "Hết giờ hình này rồi.";
+  doiMana("gai_dau", true);
+  noi("het_hinh", true, () => setTimeout(sangHinh, 200));
+}
+function ketThuc() {
+  dangVe = false; dungGio();
+  noi("xong_luot", true, () => noi("tong_ket", true, null));
   hienKet();
 }
 function veLenCanvas(c, ds, rong, cao) {
@@ -554,10 +587,10 @@ function veLenCanvas(c, ds, rong, cao) {
   veNet(b, ds.map(n => n.map(p => [150 + (p[0] - (x0 + x1) / 2) * tl, 110 + (p[1] - (y0 + y1) / 2) * tl])), 5);
 }
 function hienKet() {
-  const so = ketQua.filter(k => k.dung).length, bo = ketQua.slice(0, SO_HINH).filter(k => k.dung).length, luoi = $("luoi_ket");
+  const so = ketQua.filter(k => k.dung).length, bo = so, luoi = $("luoi_ket");
   luoi.innerHTML = "";
-  const hien = ketQua.slice(0, 12);
-  luoi.style.gridTemplateColumns = "repeat(" + Math.min(6, Math.max(3, hien.length)) + ",minmax(0,1fr))";
+  const hien = ketQua;
+  luoi.style.gridTemplateColumns = "repeat(3,minmax(0,1fr))";
   hien.forEach(k => {
     const b = document.createElement("button"); b.className = "ket " + (k.dung ? "dung" : "sai");
     b.setAttribute("aria-label", k.ten + (k.dung ? ", Mana đoán ra" : ", Mana chưa đoán ra") + ". Xem hình AI đã học");
@@ -571,7 +604,7 @@ function hienKet() {
   $("sao").innerHTML = "";
   const soSao = bo >= 5 ? 3 : bo >= 3 ? 2 : bo >= 1 ? 1 : 0;
   for (let i = 0; i < 3; i++) { const s = document.createElement("span"); s.className = i < soSao ? "" : "tat"; s.innerHTML = icon("star"); $("sao").appendChild(s); }
-  $("diem").textContent = so + " hình";
+  $("diem").textContent = so + " trên " + SO_HINH;
   $("mana_ket").src = DU.mana[so ? "hao_hung" : "gai_dau"];
   /* Học sinh có thể đang vẽ lúc hết giờ: khóa màn kết quả 1 giây để cú nhả chuột không bấm nhầm. */
   $("m_ket").style.pointerEvents = "none";
@@ -614,7 +647,7 @@ function chonCheDo(m) {
   if (m === "but") vongGom(null, false);
 }
 function choiMoi() {
-  xepDe(); conLai = TONG_GIAY; $("giay").textContent = conLai; $("dong_ho").classList.remove("gap");
+  xepDe();
   noi("bat_dau", true, () => hienDe());
 }
 $("nut_choi").onclick = () => { moAm(); choiMoi(); };

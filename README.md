@@ -6,8 +6,8 @@ Trò chơi vẽ cho học sinh lớp 4, 5. Em vẽ, Mana đoán và đọc dự 
 
 ## Luật chơi
 
-- Vẽ 6 hình liên tục trong 60 giây. Mana đoán ra thì tự sang hình kế.
-- Có bút, gôm, xóa hết, bỏ qua. Xong 6 hình còn giờ thì vẽ hình thưởng, đủ 60 giây mới dừng.
+- Vẽ 6 hình liên tục, mỗi hình 20 giây. Mana đoán ra thì có pháo giấy chúc mừng rồi tự sang hình kế. Hết 20 giây cũng sang hình kế.
+- Có bút, gôm, xóa hết, bỏ qua.
 - Cuối lượt, bấm vào từng hình để xem Mana đoán gì, mọi người vẽ thế nào, vì sao Mana đoán ra hoặc đoán nhầm.
 
 Nút **Thử loa** ở màn đầu dùng để kiểm tra tiếng. Nên mở bằng Chrome hoặc Edge.
