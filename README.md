@@ -6,7 +6,7 @@ Trò chơi vẽ cho học sinh lớp 4, 5. Em vẽ, Mana đoán và đọc dự 
 
 ## Luật chơi
 
-- Vẽ 6 hình, mỗi hình 20 giây, 4 hình dễ và 2 hình thử thách. Chơi một mình hoặc 6 bạn tiếp sức trên một máy: bạn nhận máy bấm Vẽ! thì giờ mới chạy.
+- Vẽ 6 hình, mỗi hình 20 giây, 4 hình dễ và 2 hình thử thách. Chơi một mình hoặc đội 2 đến 3 bạn tiếp sức trên một máy: bạn nhận máy bấm Vẽ! thì giờ mới chạy.
 - Mana đoán ra thì có pháo giấy chúc mừng rồi sang hình kế. Hết 20 giây cũng sang hình kế.
 - Có bút, gôm, xóa hết, bỏ qua.
 - Cuối lượt, bấm vào từng hình để xem Mana đoán gì, mọi người vẽ thế nào, vì sao Mana đoán ra hoặc đoán nhầm.

@@ -5,6 +5,46 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Thi vẽ với Mana</title>
+<script>
+/* Canh tải: tệp 10 MB có thể bị đứt giữa chừng, trang đứng mãi ở Đang nạp AI. Đoạn này đứng trước mọi dữ liệu nhúng nên vẫn chạy khi tệp bị cắt, không dựa vào CSS hay phần tử nào của game. */
+(function () {
+  var CHO = 45000, xong = false, hop = null, chu = null;
+  function loiNhan() {
+    if (navigator.onLine === false && location.protocol !== "file:") return "Máy đang mất mạng. Nhờ thầy cô kết nối wifi rồi bấm Tải lại trang.";
+    /* Mạng 1 Mbps cần khoảng 55 giây, nên có lời chờ thêm. Không phân biệt được chậm với đứt: Chrome để readyState là loading mãi khi kết nối đứt. */
+    return "Game chưa tải xong. Chờ thêm một chút, chưa được thì nhờ thầy cô bấm Tải lại trang.";
+  }
+  function capNhat() { if (hop) chu.textContent = loiNhan(); }
+  function hien() {
+    if (xong || hop) return;
+    hop = document.createElement("div");
+    hop.id = "bao_nap";
+    hop.setAttribute("role", "alert");
+    hop.style.cssText = "position:fixed;z-index:2147483647;left:16px;right:16px;bottom:6vh;max-width:560px;margin:0 auto;padding:18px 20px;background:#fff;border:4px solid #0b74cc;border-radius:20px;color:#23335c;font:800 22px/1.3 Nunito,'Segoe UI',system-ui,sans-serif;text-align:center;";
+    chu = document.createElement("div");
+    var nut = document.createElement("button");
+    nut.id = "nut_tai_lai";
+    nut.type = "button";
+    nut.textContent = "Tải lại trang";
+    nut.style.cssText = "display:block;margin:14px auto 0;min-height:52px;padding:0 28px;border:0;border-radius:16px;background:#178a43;color:#fff;font:inherit;font-weight:900;cursor:pointer;";
+    nut.onclick = function () { location.reload(); };
+    hop.appendChild(chu);
+    hop.appendChild(nut);
+    capNhat();
+    (document.body || document.documentElement).appendChild(hop);
+  }
+  var hen = setTimeout(hien, CHO);
+  window.addEventListener("online", capNhat);
+  window.addEventListener("offline", capNhat);
+  /* moBai gọi khi game sẵn sàng: bỏ hẹn giờ, gỡ lời nhắc nếu mạng chậm đã làm nó hiện. */
+  window.__napXong = function () {
+    xong = true;
+    clearTimeout(hen);
+    if (hop && hop.parentNode) hop.parentNode.removeChild(hop);
+    hop = null;
+  };
+})();
+</script>
 <style>
 /*PHONG*/
 /* Bảng màu của game Oẳn tù xì: màu đặc, không chuyển màu. Xanh trời là người vẽ, tím là AI, vàng là điểm, cam là đồng hồ. */
@@ -109,7 +149,8 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 .o.kho { border-color:var(--hong); color:var(--hong); }
 
 /* Màn kết quả */
-#m_ket { flex-direction:column; gap:12px; padding:14px 18px 20px; align-items:center; }
+/* Màn kết quả và màn hình đã học chừa 72px dưới cùng: Netlify gói miễn phí tự chèn huy hiệu ở góc phải dưới (cao tới 56px tính từ đáy), không tắt được. */
+#m_ket { flex-direction:column; gap:12px; padding:14px 18px 72px; align-items:center; }
 #dau_ket { display:flex; align-items:center; gap:14px; }
 #dau_ket img { height:13vh; }
 #sao { display:flex; gap:6px; font-size:7vh; color:var(--vang); }
@@ -126,7 +167,7 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 #hang_ket .khoi { font-size:clamp(26px,4.8vh,40px); }
 
 /* Hình AI đã học */
-#m_hoc { flex-direction:column; gap:10px; padding:12px 18px 20px; background-color:var(--kem); z-index:6; }
+#m_hoc { flex-direction:column; gap:10px; padding:12px 18px 72px; background-color:var(--kem); z-index:6; }
 #hoc_dau { display:flex; align-items:center; gap:12px; }
 #hoc_dau i { width:64px; height:64px; background:var(--troi); color:#fff; border-radius:50%; display:grid; place-items:center; font-size:44px; font-style:normal; flex:none; }
 #hoc_chu { font-size:clamp(26px,5vh,42px); font-weight:900; line-height:1.15; color:var(--troi-dam); flex:1; }
@@ -158,7 +199,7 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
   #nut_bo { flex:1.4; } .chu_nut { font-size:.7em; }
   #doan { gap:4px; } .d { font-size:13px; padding:2px 5px 4px; border-width:2px; gap:1px 3px; } .d u { height:7px; }
   #bong { font-size:18px; padding:6px 12px; min-height:2.2em; }
-  #m_ket { overflow:auto; padding:10px; } #luoi_ket { grid-template-columns:repeat(3,minmax(0,1fr)) !important; grid-auto-rows:120px; flex:none; }
+  #m_ket { overflow:auto; padding:10px 10px 72px; } #luoi_ket { grid-template-columns:repeat(3,minmax(0,1fr)) !important; grid-auto-rows:120px; flex:none; }
   #dau_ket img { height:64px; } #sao { font-size:34px; } #diem { font-size:34px; }
   #hang_ket { flex-wrap:wrap; justify-content:center; } #goi_y { text-align:center; }
   #m_hoc { overflow:auto; } #hoc_than { flex:none; } #c_em { height:180px; flex:none; }
@@ -312,16 +353,17 @@ function dungNoi() {
   if (nguon && nguon.stop) { nguon.onended = null; try { nguon.stop(); } catch (e) { /* nguồn đã dừng */ } }
   nguon = null;
 }
+/* xong nhận hetCau: false khi câu này bị câu khác cắt. Câu nối tiếp chỉ đọc khi hetCau là true, nếu không hẹn giờ dự phòng của câu đã bị cắt sẽ chen ngang câu đang đọc. Việc của game (sang hình) thì luôn chạy. */
 function noi(ten, gap, xong) {
-  let daXong = false;
-  const ket = () => { if (daXong) return; daXong = true; if (xong) xong(); };
+  let daXong = false, luot = soLuot;
+  const ket = () => { if (daXong) return; daXong = true; if (xong) xong(luot === soLuot); };
   if (!batTieng || !DU.giong[ten] || !ac) { if (xong) setTimeout(ket, gap ? 900 : 0); return false; }
   if (nguon && !gap) return false;
   dungNoi();
-  const luot = soLuot;
+  luot = soLuot;
   nguon = {};
   layTieng(ten).then(b => {
-    if (luot !== soLuot) return;
+    if (luot !== soLuot) { ket(); return; }
     const n = ac.createBufferSource();
     n.buffer = b; n.connect(phanTich);
     n.onended = () => { if (nguon === n) nguon = null; ket(); };
@@ -528,7 +570,7 @@ function hienDe() {
   $("m_the").classList.toggle("kho", kho); $("the_de").classList.toggle("kho", kho);
   chuyenMan("m_the");
   const lon = $("the_lon"); lon.style.animation = "none"; void lon.offsetWidth; lon.style.animation = "";
-  if (kho) noi("thu_thach", true, () => noi(tenAm, true)); else noi(tenAm, true);
+  if (kho) noi("thu_thach", true, hetCau => { if (hetCau) noi(tenAm, true); }); else noi(tenAm, true);
   $("nut_ve").onclick = () => {
     $("nut_ve").onclick = null;
     moAm(); chuyenMan("m_choi"); veLai(); dangVe = true; chayGio();
@@ -589,7 +631,7 @@ function hetHinh() {
 }
 function ketThuc() {
   dangVe = false; dungGio();
-  noi("xong_luot", true, () => noi("tong_ket", true, null));
+  noi("xong_luot", true, hetCau => { if (hetCau) noi("tong_ket", true, null); });
   hienKet();
 }
 function veLenCanvas(c, ds, rong, cao) {
@@ -687,6 +729,7 @@ async function moBai() {
   moHinh = await tf.loadLayersModel(tf.io.fromMemory({ modelTopology: DU.mo_hinh.modelTopology, weightSpecs: DU.mo_hinh.weightsManifest[0].weights, weightData: nhiPhan }));
   tf.tidy(() => moHinh.predict(tf.zeros([1, 28, 28, 1])));
   chuyenMan("m_dau");
+  window.__napXong();
 }
 moBai().catch(e => { $("m_cho").textContent = "Chưa nạp được AI: " + e.message + ". Hãy mở bằng Chrome hoặc Edge."; });
 

@@ -42,6 +42,10 @@ def choi(pg, nd, ra, kq):
     while time.time() - t0 < 170:
         if pg.locator("#m_ket.hien").count():
             break
+        if pg.locator("#m_the.hien").count():
+            pg.locator("#nut_ve").click()
+            pg.wait_for_timeout(100)
+            continue
         if pg.evaluate("() => window.__thu.the().dangVe") is False:
             pg.wait_for_timeout(200)
             continue
@@ -110,7 +114,7 @@ if __name__ == "__main__":
     os.makedirs(ra, exist_ok=True)
     loi = []
     with sync_playwright() as p:
-        b = p.chromium.launch(args=["--use-gl=swiftshader", "--enable-webgl", "--ignore-gpu-blocklist", "--autoplay-policy=no-user-gesture-required"])
+        b = p.chromium.launch(args=["--use-gl=swiftshader", "--enable-webgl", "--ignore-gpu-blocklist"])
         ctx = b.new_context(viewport={"width": rong, "height": cao}, offline=True)
         pg = ctx.new_page()
         pg.on("pageerror", lambda e: loi.append(str(e)))
