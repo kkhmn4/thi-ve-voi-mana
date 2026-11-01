@@ -22,10 +22,10 @@ DAY = os.path.dirname(os.path.abspath(__file__))
 RA = os.path.join(DAY, "tai-nguyen")
 GOC = os.path.abspath(os.path.join(DAY, "..", "..", "..", ".."))
 ICON = ["pencil-simple", "eraser", "trash", "skip-forward", "play", "arrow-counter-clockwise", "x", "check", "timer", "star", "speaker-high", "speaker-slash", "images",
-        "cat", "fish", "sun", "umbrella", "bicycle", "flower", "tree", "house", "ice-cream", "bird", "clock"]
+        "cat", "fish", "sun", "umbrella", "bicycle", "flower", "tree", "house", "ice-cream", "bird", "clock", "fire", "guitar", "lighthouse", "castle-turret", "train"]
 PHONG = ["nunito-vietnamese-700-normal", "nunito-latin-700-normal", "nunito-vietnamese-900-normal", "nunito-latin-900-normal"]
 TU_THE = ["hao_hung", "cho_doi", "ngac_nhien", "gai_dau", "vo_tay", "tu_tin"]
-DE = ["cat", "fish", "sun", "umbrella", "bicycle", "flower", "tree", "house", "star", "ice_cream", "bird", "clock"]
+DE = ["cat", "fish", "sun", "umbrella", "bicycle", "flower", "tree", "house", "star", "ice_cream", "bird", "clock", "guitar", "lighthouse", "castle", "train"]
 CAU = {"gioi_thieu": "Bạn vẽ, mình đoán nhé!", "bat_dau": "Bắt đầu nào!", "het_gio": "Hết giờ rồi! Cùng xem các bạn đã vẽ gì nhé.", "bo_qua": "Mình bỏ qua hình này nhé.",
        "thuong": "Giỏi quá! Vẽ thêm hình thưởng nhé."}
 GIONG = "Thục Đoan"

@@ -22,7 +22,10 @@ DAY = os.path.dirname(os.path.abspath(__file__))
 TN = os.path.join(DAY, "tai-nguyen")
 GOC = "https://storage.googleapis.com/quickdraw_dataset/full/simplified/%s.ndjson"
 DE = {"cat": "cat", "fish": "fish", "sun": "sun", "umbrella": "umbrella", "bicycle": "bicycle", "flower": "flower", "tree": "tree", "house": "house",
-      "star": "star", "ice_cream": "ice-cream", "bird": "bird", "clock": "clock"}
+      "star": "star", "ice_cream": "ice-cream", "bird": "bird", "clock": "clock",
+      "guitar": "guitar", "lighthouse": "lighthouse", "castle": "castle-turret", "train": "train"}
+# Đề thử thách: khó vẽ với học sinh nhưng AI nhận ra tốt khi vẽ đúng (số đo do_de_kho.py: 32 đến 38 trên 40).
+KHO = {"bicycle", "guitar", "lighthouse", "castle", "train"}
 SO_MAU = 18
 
 
@@ -87,7 +90,7 @@ def main(mo, nd, day_net):
     assert not thieu, thieu
     gd = os.path.join(TN, "giong")
     du = {"ten": ten, "vi": ["" if t in AN else NHAN[t] for t in ten],
-          "de": [{"ten": NHAN[t], "so": ten.index(t), "ic": ic, "hinh": mau(t, nd)} for t, ic in DE.items()],
+          "de": [{"ten": NHAN[t], "so": ten.index(t), "ic": ic, "kho": t in KHO, "hinh": mau(t, nd)} for t, ic in DE.items()],
           "day_net": day_net,
           "mo_hinh": json.load(open(os.path.join(mo, "model.json"), encoding="utf-8")),
           "trong_so": b64(os.path.join(mo, "group1-shard1of1.bin")),

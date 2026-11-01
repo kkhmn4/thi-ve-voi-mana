@@ -98,8 +98,15 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 #m_the { align-items:center; justify-content:center; background:var(--troi); z-index:5; }
 #the_lon { display:flex; flex-direction:column; align-items:center; gap:2vh; color:#fff; text-align:center; animation:bat .3s ease-out; padding:16px; }
 #the_so { font-size:5.4vh; font-weight:900; }
-#the_hinh { width:30vh; height:30vh; background:#fff; color:var(--troi-dam); border-radius:50%; display:grid; place-items:center; font-size:21vh; }
+#the_hinh { width:26vh; height:26vh; background:#fff; color:var(--troi-dam); border-radius:50%; display:grid; place-items:center; font-size:18vh; }
 #the_ten { font-size:min(11vh,8vw); font-weight:900; line-height:1.1; }
+#the_goi { font-size:min(4.2vh,4vw); font-weight:800; min-height:1.2em; }
+#nut_ve { font-size:min(7vh,7vw); padding:.2em 1.1em; }
+#m_the.kho { background:var(--hong); }
+#m_the.kho #the_hinh { color:var(--hong-dam); }
+#the_de.kho { background:var(--hong); box-shadow:0 6px 0 var(--hong-dam); }
+#the_de.kho i { color:var(--hong-dam); }
+.o.kho { border-color:var(--hong); color:var(--hong); }
 
 /* Màn kết quả */
 #m_ket { flex-direction:column; gap:12px; padding:14px 18px 20px; align-items:center; }
@@ -203,7 +210,7 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
   <img id="mana_dau" alt="Mana">
   <h1>Thi vẽ với Mana</h1>
   <div class="ba_y">
-    <div class="y" style="--mau:var(--troi)"><i data-ic="pencil-simple"></i>6 hình</div>
+    <div class="y" style="--mau:var(--troi)"><i data-ic="pencil-simple"></i>6 hình, 2 thử thách</div>
     <div class="y" style="--mau:var(--cam)"><i data-ic="timer"></i>20 giây mỗi hình</div>
     <div class="y" style="--mau:var(--nho)"><i data-ic="speaker-high"></i>Mana đoán</div>
   </div>
@@ -245,7 +252,7 @@ button:focus-visible { outline:4px solid var(--troi-dam); outline-offset:3px; }
 
 <div id="phao" aria-hidden="true"></div>
 
-<section class="man" id="m_the"><div id="the_lon"><div id="the_so"></div><div id="the_hinh"></div><div id="the_ten"></div></div></section>
+<section class="man" id="m_the"><div id="the_lon"><div id="the_so"></div><div id="the_hinh"></div><div id="the_ten"></div><div id="the_goi"></div><button class="khoi la" id="nut_ve"><span data-ic="pencil-simple"></span>Vẽ!</button></div></section>
 
 <section class="man" id="m_ket">
   <div id="dau_ket"><img id="mana_ket" alt="Mana"><div id="sao"></div><div id="diem"></div></div>
@@ -476,17 +483,21 @@ function doan() {
   }
 }
 function xepDe() {
-  const ds = DU.de.map((d, i) => i).sort(() => Math.random() - .5);
-  /* Con mèo luôn ở đầu, nối thẳng sang việc dạy cổng. */
-  ds.splice(ds.indexOf(0), 1); ds.unshift(0);
-  danhSach = ds; ketQua = []; deThu = 0;
+  const tron = a => a.sort(() => Math.random() - .5);
+  const de = [], kho = [];
+  DU.de.forEach((d, i) => (d.kho ? kho : de).push(i));
+  tron(de); tron(kho);
+  /* Con mèo luôn ở đầu, nối thẳng sang việc dạy cổng. Hai hình cuối là thử thách. */
+  de.splice(de.indexOf(0), 1); de.unshift(0);
+  danhSach = de.slice(0, SO_HINH - 2).concat(kho.slice(0, 2)); ketQua = []; deThu = 0;
 }
 function veVach() {
   const v = $("vach"); v.innerHTML = "";
   for (let i = 0; i < SO_HINH; i++) {
     const o = document.createElement("div"), k = ketQua[i];
-    o.className = "o" + (k ? (k.dung ? " dung" : " sai") : (i === deThu ? " dang" : ""));
-    o.innerHTML = k ? icon(k.dung ? "check" : "skip-forward") : (i === deThu ? icon(DU.de[danhSach[i]].ic) : "");
+    const kho = DU.de[danhSach[i]].kho;
+    o.className = "o" + (k ? (k.dung ? " dung" : " sai") : (i === deThu ? " dang" : (kho ? " kho" : "")));
+    o.innerHTML = k ? icon(k.dung ? "check" : "skip-forward") : (i === deThu ? icon(DU.de[danhSach[i]].ic) : (kho ? icon("fire") : ""));
     v.appendChild(o);
   }
 }
@@ -509,14 +520,19 @@ function hienDe() {
   $("bong").className = ""; $("bong").textContent = "Mình đang nhìn đây!";
   doiMana("cho_doi"); xoaDoan(); veVach();
   conLai = GIAY_HINH; $("giay").textContent = conLai; $("dong_ho").classList.remove("gap");
-  $("the_so").textContent = "Hình " + so + " trên " + SO_HINH;
+  const kho = !!d.kho, tenAm = "v_" + DU.ten[d.so].replace("-", "_");
+  $("the_so").innerHTML = (kho ? icon("fire") + " Thử thách: " : "") + "Hình " + so + " trên " + SO_HINH;
+  $("the_so").style.cssText = "display:flex;gap:.3em;align-items:center;justify-content:center";
   $("the_hinh").innerHTML = icon(d.ic); $("the_ten").textContent = d.ten;
+  $("the_goi").textContent = so > 1 ? "Chuyền máy cho bạn kế tiếp" : "";
+  $("m_the").classList.toggle("kho", kho); $("the_de").classList.toggle("kho", kho);
   chuyenMan("m_the");
   const lon = $("the_lon"); lon.style.animation = "none"; void lon.offsetWidth; lon.style.animation = "";
-  let daChay = false;
-  const tiep = () => { if (daChay) return; daChay = true; chuyenMan("m_choi"); veLai(); dangVe = true; chayGio(); };
-  noi("v_" + DU.ten[d.so].replace("-", "_"), true, () => setTimeout(tiep, 150));
-  setTimeout(tiep, 3200);
+  if (kho) noi("thu_thach", true, () => noi(tenAm, true)); else noi(tenAm, true);
+  $("nut_ve").onclick = () => {
+    $("nut_ve").onclick = null;
+    moAm(); chuyenMan("m_choi"); veLai(); dangVe = true; chayGio();
+  };
 }
 function ghiKet(dung) {
   dangVe = false; dungGio();

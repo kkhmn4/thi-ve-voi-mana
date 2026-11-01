@@ -8,7 +8,7 @@ Ra lop-4-5/slide/anh/mana-3d/mana_3d_<tư thế>.gif (512 px, cho slide) và tai
 import glob
 import os
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 DAY = os.path.dirname(os.path.abspath(__file__))
 GOC = os.path.abspath(os.path.join(DAY, "..", "..", "..", ".."))
@@ -29,8 +29,26 @@ def doc(tu_the):
     return [Image.open(f).convert("RGBA") for f in tep], giay[:BO_KHUNG - 1]
 
 
+def bit_lo(k):
+    """Bít chỗ trong suốt nằm trong thân Mana, như tròng kính, bằng nền trắng. Nền ngoài giữ trong suốt."""
+    a = k.getchannel("A").point(lambda v: 255 if v > 40 else 0)
+    ngoai = a.copy()
+    r, c = ngoai.size
+    for d in ((0, 0), (r - 1, 0), (0, c - 1), (r - 1, c - 1)):
+        if ngoai.getpixel(d) == 0:
+            ImageDraw.floodfill(ngoai, d, 128)
+    than = ngoai.point(lambda v: 0 if v == 128 else 255)
+    nen = Image.new("RGBA", k.size, (255, 255, 255, 255))
+    nen.alpha_composite(k)
+    ra = Image.composite(nen, k, than)
+    alpha = Image.composite(Image.new("L", k.size, 255), k.getchannel("A"), than)
+    ra.putalpha(alpha)
+    return ra
+
+
 def cat_chung(ds):
-    hop = [k.getchannel("A").point(lambda v: 255 if v > 16 else 0).getbbox() for k in ds]
+    ds = [bit_lo(k) for k in ds]
+    hop =[k.getchannel("A").point(lambda v: 255 if v > 16 else 0).getbbox() for k in ds]
     x0, y0 = min(h[0] for h in hop), min(h[1] for h in hop)
     x1, y1 = max(h[2] for h in hop), max(h[3] for h in hop)
     return [k.crop((x0, y0, x1, y1)) for k in ds]
